@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    image: ezio911/free-node:0.3
+    container_name: free-node
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=free-node
+      - REDIS_PORT=6379
+      - REDIS_PWD=ezio911
+    depends_on:
+      - free-node-redis
+    networks:
+      - free-node
+
+  free-node-redis:
+    image: redis:alpine
+    container_name: free-node-redis
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--requirepass", "ezio911" ]
+    networks:
+      - free-node
+
+networks:
+  free-node:
+    driver: bridge
